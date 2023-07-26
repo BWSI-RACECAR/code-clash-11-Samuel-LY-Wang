@@ -36,22 +36,35 @@ Input: [3, 1, 4, 1, 5, 9, 2, 6, 5], Output: 4
 
 """
 
+def binary(num, digits):
+  binarr=[0]*digits
+  for i in range(digits-1, -1, -1):
+    if num>=2 ** i:
+      binarr[i]=1
+      num -= 2 ** i
+  return binarr
+
+def is_increasing(arr):
+  for i in range(len(arr)-1):
+    if arr[i+1]<arr[i]:
+      return False
+  return True
+
 class Solution:
     def find_longest_increasing_subsequence(self, arr):
-      minx=1000000000
-      minarg=-1
-      for i in range(len(arr)):
-        if (arr[i]<minx):
-          minx=arr[i]
-          minarg=i
-      subsequencelen=1
-      if minarg==-1:
-        return 1
-      for i in range(minarg, len(arr)):
-        if (arr[i]>minx):
-          subsequencelen += 1
-          minx=arr[i]
-      return subsequencelen
+      l=len(arr)
+      maxlen=0
+      for i in range(2 ** l):
+        aux=binary(i, l)
+        # print(aux)
+        aux2=[]
+        for j in range(l):
+          if aux[j]:
+            aux2.append(arr[j])
+        # print(aux2)
+        if is_increasing(aux2):
+          maxlen=max(maxlen, len(aux2))
+      return maxlen
 
 def main():
     array = input().split(" ")
